@@ -29,15 +29,19 @@ module.exports = {
   deleteUser(req, res) {
     User.deleteOne({ _id: req.params.id })
       .then((user) => {
-        Thought.deleteMany({ _id: id});
+        // Thought.deleteMany({ _id: id});
         return res.json(user);
       })
       .catch((err) => res.status(500).json(err));
   },
   addFriend(req, res) {
-    User.findByIdAndUpdate(req.params.id, {
-      $addToSet: { friends: { _id: Types.ObjectId(req.params.friendId) } },
-    })
+    User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $addToSet: { friends: { _id: Types.ObjectId(req.params.friendId) } },
+      },
+      { new: true }
+    )
       .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
   },

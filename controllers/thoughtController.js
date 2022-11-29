@@ -23,9 +23,13 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   updateThought(req, res) {
-    Thought.findByIdAndUpdate(req.params.thoughtId, {
-      thoughtText: req.body.thoughtText,
-    })
+    Thought.findByIdAndUpdate(
+      req.params.thoughtId,
+      {
+        thoughtText: req.body.thoughtText,
+      },
+      { new: true }
+    )
       .then((thought) => res.json(thought))
       .catch((err) => res.status(500).json(err));
   },
@@ -35,23 +39,31 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   createReaction(req, res) {
-    Thought.findByIdAndUpdate(req.params.thoughtId, {
-      $addToSet: {
-        reactions: {
-          reactionBody: req.body.reactionBody,
-          username: req.body.username,
+    Thought.findByIdAndUpdate(
+      { _id: req.params.thoughtId },
+      {
+        $addToSet: {
+          reactions: {
+            reactionBody: req.body.reactionBody,
+            username: req.body.username,
+          },
         },
       },
-    })
+      { new: true }
+    )
       .then((thought) => res.json(thought))
       .catch((err) => res.status(500).json(err));
   },
   deleteReaction(req, res) {
-    Thought.findByIdAndUpdate(req.params.thoughtId, {
-      $pull: {
-        reactions: { reactionId: Types.ObjectId(req.params.reactionId) },
+    Thought.findByIdAndUpdate(
+      req.params.thoughtId,
+      {
+        $pull: {
+          reactions: { reactionId: Types.ObjectId(req.params.reactionId) },
+        },
       },
-    })
+      { new: true }
+    )
       .then((thought) => res.json(thought))
       .catch((err) => res.status(500).json(err));
   },
