@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const User = model("User", userSchema);
-const userSchema = new mongoose.Schema(
+
+const userSchema = new Schema(
   {
     username: {
       type: String,
@@ -32,6 +33,7 @@ const userSchema = new mongoose.Schema(
   {
     toJSON: {
       virtuals: true,
+      getters: true,
     },
   }
 );
