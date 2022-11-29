@@ -1,4 +1,5 @@
 const { User, Thought, Reaction } = require("../models");
+const { Types } = require("mongoose");
 
 module.exports = {
   createThought(req, res) {
